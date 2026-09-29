@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 type Job = {
@@ -21,18 +21,7 @@ const steps = [
   "Creating cinematic scenes",
   "Composing presentation",
 ];
-const savedJobKey = "url-studio-job";
-const genericFailure = "Could not connect to the studio. Please try again.";
-
-// job.url is whatever the backend echoed back, so it may not parse.
-// A bad value must not take the whole view down mid-render.
-function hostnameOf(url: string) {
-  try {
-    return new URL(url).hostname;
-  } catch {
-    return url;
-  }
-}
+const savedJobKey = "oneminute-studio-job";
 
 function Arrow() {
   return (
@@ -132,9 +121,6 @@ export default function Page() {
   const [job, setJob] = useState<Job | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
-  // Both forms share this handler, so the error is tied to the input it came
-  // from — otherwise one failed submit renders the message twice on the page.
-  const [errorAt, setErrorAt] = useState("");
   const [connection, setConnection] = useState("");
 
   // Restore the last accepted job without submitting another paid generation.
@@ -206,13 +192,11 @@ export default function Page() {
     };
   }, [id, running]);
 
-  async function generate(event: FormEvent<HTMLFormElement>) {
+  async function generate(event: any) {
     event.preventDefault();
-    const form = event.currentTarget;
-    const url = new FormData(form).get("url");
+    const url = new FormData(event.currentTarget).get("url");
     setSubmitting(true);
     setError("");
-    setErrorAt(form.querySelector("input")?.id ?? "");
     try {
       const response = await fetch("/api/presentations", {
         method: "POST",
@@ -221,12 +205,17 @@ export default function Page() {
       });
       // A missing or unreachable backend answers with an HTML error page, not JSON.
       const result = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(result.error ?? genericFailure);
+      if (!response.ok)
+        throw new Error(result.error ?? "Could not connect to the studio. Please try again.");
       setJob(result);
       localStorage.setItem(savedJobKey, result.id);
       window.scrollTo({ top: 0 });
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : genericFailure);
+      setError(
+        cause instanceof Error
+          ? cause.message
+          : "Could not connect to the studio. Please try again.",
+      );
     } finally {
       setSubmitting(false);
     }
@@ -236,7 +225,6 @@ export default function Page() {
     localStorage.removeItem(savedJobKey);
     setJob(null);
     setError("");
-    setErrorAt("");
     setConnection("");
   }
 
@@ -279,7 +267,7 @@ export default function Page() {
           Made from your real website <span>·</span> Ready-to-share MP4{" "}
           <span>·</span> No editing required
         </p>
-        {error && errorAt === inputId && (
+        {error && (
           <p id={`form-error${suffix}`} className="error-message" role="alert">
             {error}
           </p>
@@ -291,13 +279,13 @@ export default function Page() {
   return (
     <div className="studio-shell">
       <header className="site-header">
-        <Link className="wordmark" href="/" aria-label="URL Studio home">
+        <Link className="wordmark" href="/" aria-label="OneMinute Studio home">
           <span className="brand-symbol" aria-hidden="true">
             <i />
             <i />
             <i />
           </span>
-          URL <span className="wordmark-light">Studio</span>
+          OneMinute <span className="wordmark-light">Studio</span>
         </Link>
         <span className="header-note">
           <span className="tiny-dot" /> A new perspective on your product
@@ -362,7 +350,7 @@ export default function Page() {
                   <br />A new <em>perspective.</em>
                 </h2>
                 <p className="intro">
-                  URL Studio uses your real product interface and turns it
+                  OneMinute Studio uses your real product interface and turns it
                   into a cinematic sequence without replacing its identity.
                 </p>
               </div>
@@ -375,7 +363,7 @@ export default function Page() {
                 </span>
                 <span className="stage-label bottom-left">00:00:03:12</span>
                 <span className="stage-label bottom-right">
-                  URL STUDIO
+                  ONEMINUTE STUDIO
                 </span>
                 <div className="source-panel">
                   <MiniSite />
@@ -563,7 +551,7 @@ export default function Page() {
               </div>
               <figure className="stage cut-stage">
                 <span className="stage-label top-left">
-                  <span className="tiny-dot" /> url-studio-presentation.mp4
+                  <span className="tiny-dot" /> oneminute-presentation.mp4
                 </span>
                 <span className="stage-label top-right">
                   SCENE 02 <span>/</span> 04
@@ -596,7 +584,7 @@ export default function Page() {
                   <span>00:09 / 00:28</span>
                 </div>
                 <figcaption className="sr-only">
-                  A finished URL Studio presentation: one continuous film
+                  A finished OneMinute Studio presentation: one continuous film
                   built from the sections of a website.
                 </figcaption>
               </figure>
@@ -648,7 +636,7 @@ export default function Page() {
               is <em>ready.</em>
             </h1>
             <p className="intro">
-              A new perspective on {hostnameOf(job.url)}.
+              A new perspective on {new URL(job.url).hostname}.
             </p>
             <div className="video-frame">
               <video
@@ -668,7 +656,7 @@ export default function Page() {
               <a
                 className="primary-button"
                 href={`${job.finalVideoUrl}?download=1`}
-                download="url-studio-presentation.mp4"
+                download="oneminute-presentation.mp4"
               >
                 Download MP4
                 <Arrow />
@@ -683,7 +671,8 @@ export default function Page() {
               </p>
             )}
             <p className="result-meta">
-              1920 × 1080 <span>·</span> 16:9 <span>·</span> Made with URL Studio
+              1920 × 1080 <span>·</span> 16:9 <span>·</span> Made with OneMinute
+              Studio
             </p>
           </section>
         ) : (
@@ -707,7 +696,7 @@ export default function Page() {
                 </>
               )}
             </h1>
-            <p className="intro">{hostnameOf(job.url)}</p>
+            <p className="intro">{new URL(job.url).hostname}</p>
             <div className="progress-panel" aria-live="polite">
               <div className="progress-heading">
                 <span>
@@ -767,8 +756,7 @@ export default function Page() {
             ) : (
               <div className="failure-detail">
                 <p className="error-message" role="alert">
-                  {job.error ??
-                    "The studio stopped before the presentation was finished."}
+                  {job.error}
                 </p>
                 <p className="reference">Reference: {job.id}</p>
                 <button className="primary-button" onClick={reset}>
@@ -783,7 +771,7 @@ export default function Page() {
       <footer>
         <span>One link. A different dimension.</span>
         <span>
-          URL Studio <span className="footer-mark">/</span> 2026
+          OneMinute Studio <span className="footer-mark">/</span> 2026
         </span>
       </footer>
     </div>

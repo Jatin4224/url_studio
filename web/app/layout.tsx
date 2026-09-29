@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "URL Studio",
+  title: "OneMinute Studio",
   description: "Turn any website into a cinematic product presentation.",
 };
 
