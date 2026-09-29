@@ -1,15 +1,15 @@
-# OneMinute Studio
+# URL Studio
 
 **Paste a website URL. Get back a short cinematic video about that product.**
 
-OneMinute Studio takes a public product page, reads it the way a person would, decides
-which parts are worth showing, and turns them into a single continuous ~50-second
-1920×1080 MP4 — a camera gliding across the real page, settling on the headline, lifting
-the product card into focus, moving on. No stock footage, no templates: every pixel in
-the film comes from screenshots of the actual site.
+URL Studio takes a public product page, reads it the way a person would, decides which
+parts are worth showing, and turns them into a single continuous ~50-second 1920×1080
+MP4 — a camera gliding across the real page, settling on the headline, lifting the
+product card into focus, moving on. No stock footage, no templates: every pixel in the
+film comes from screenshots of the actual site.
 
 ```
-https://yourproduct.com  ──►  [ OneMinute Studio ]  ──►  presentation.mp4
+https://yourproduct.com  ──►  [ URL Studio ]  ──►  presentation.mp4
 ```
 
 ---
@@ -44,10 +44,14 @@ The finished video is streamed back to the browser and can be played or download
 ## Repository layout
 
 ```
-OneMinute-Studio/
-├── web/          Next.js 16 app — landing page, job UI, video player, admin log viewer
-└── workers/      Node worker — the generation pipeline (Playwright + ffmpeg + Higgsfield)
+OneMinute-Studio/          the checkout folder; the product itself is URL Studio
+├── web/                   Next.js 16 app — landing page, job UI, video player, admin log viewer
+└── workers/               Node worker — the generation pipeline (Playwright + ffmpeg + Higgsfield)
 ```
+
+Package names and environment variables still carry the earlier `oneminute` spelling
+(`@oneminute/worker`, `ONE_MINUTE_LOGS_API_KEY`). Those are real identifiers in the code
+and are left alone; only the product name is URL Studio.
 
 ### `web/` — the front end
 
