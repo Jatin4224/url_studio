@@ -1,6 +1,6 @@
-# OneMinute Studio — starter
+# URL Studio — starter
 
-The complete OneMinute Studio landing page and presentation UI, with **no backend connected**.
+The complete URL Studio landing page and presentation UI, with **no backend connected**.
 
 ```sh
 npm install
@@ -11,4 +11,5 @@ Everything visual is here: the landing page sections, the URL input, the progres
 player. Submitting a URL calls `POST /api/presentations`, which does not exist yet, so the page shows
 "Could not connect to the studio". That route, the worker that generates the presentation, storage and
 monitoring are what we build next.
+
 # url_studio
