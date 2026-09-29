@@ -27,7 +27,8 @@ as it happens.
 | 4 | **Creating cinematic scenes** | Lays the captures side by side and renders one unbroken camera move across them: slow drifts, sweeps and focus pulls, with real motion blur (rendered as averaged sub-frames) and depth of field around whatever is in focus. Optionally, the single best chart on the page is sent to **Higgsfield** for an image-to-video pass so its bars visibly animate, then composited back into the still card. |
 | 5 | **Composing presentation** | ffmpeg pads to exactly 1920×1080, adds a half-second fade in and out, encodes H.264 at CRF 18 with `+faststart`, and — if R2 is configured — uploads the result. |
 
-The finished video is streamed back to the browser and can be played or downloaded.
+The finished video is streamed back to the browser and can be played or downloaded as
+`url-studio-presentation.mp4`.
 
 ### Two design rules worth knowing
 
@@ -44,14 +45,9 @@ The finished video is streamed back to the browser and can be played or download
 ## Repository layout
 
 ```
-OneMinute-Studio/          the checkout folder; the product itself is URL Studio
-├── web/                   Next.js 16 app — landing page, job UI, video player, admin log viewer
-└── workers/               Node worker — the generation pipeline (Playwright + ffmpeg + Higgsfield)
+web/        Next.js 16 app — landing page, job UI, video player, admin log viewer
+workers/    Node worker — the generation pipeline (Playwright + ffmpeg + Higgsfield)
 ```
-
-Package names and environment variables still carry the earlier `oneminute` spelling
-(`@oneminute/worker`, `ONE_MINUTE_LOGS_API_KEY`). Those are real identifiers in the code
-and are left alone; only the product name is URL Studio.
 
 ### `web/` — the front end
 
@@ -140,7 +136,7 @@ a key is absent rather than failing.
 | Variable | Effect if unset |
 |----------|-----------------|
 | `WORKER_URL` | Required. Where the worker is listening, e.g. `http://localhost:4000`. |
-| `ONE_MINUTE_LOGS_API_KEY` | Monitoring is disabled; logs only reach the console. |
+| `LOGS_API_KEY` | Monitoring is disabled; logs only reach the console. |
 | `WORKER_LOG_SECRET` | The worker-log endpoint returns 503. Must match the worker's value. |
 | `ADMIN_PASSWORD` | `/logs` cannot be signed into. |
 
@@ -157,6 +153,18 @@ a key is absent rather than failing.
 
 > Note: `R2_BUCKET`, `WEB_URL` and `PORT` are read by the code but are not listed in
 > `workers/.env.example` — add them yourself if you need them.
+
+---
+
+## Third-party dependencies
+
+The admin log viewer is built on `@oneminutelogs/next`, a third-party logging SDK. That
+package name, its import paths and the `/api/oneminutelogs/stream` route it expects are
+the vendor's, not ours, and are left untouched. Everything that is ours — the product
+name, the worker package, the download filename, the storage keys — is URL Studio.
+
+Video generation uses **Higgsfield** (`kling-video/v3.0`) and storage uses **Cloudflare
+R2**; both are optional.
 
 ---
 

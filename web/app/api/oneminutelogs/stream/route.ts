@@ -1,11 +1,11 @@
 import { log } from "@/lib/logs";
 import { handleProcessRequest } from "@oneminutelogs/next";
 
-const forwardOneMinuteLogsRequest = (request: Request) =>
+const forwardLogStreamRequest = (request: Request) =>
   handleProcessRequest({
     request,
     logger: log,
   });
 
-export const GET = forwardOneMinuteLogsRequest;
-export const POST = forwardOneMinuteLogsRequest;
+export const GET = forwardLogStreamRequest;
+export const POST = forwardLogStreamRequest;

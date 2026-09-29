@@ -1,5 +1,5 @@
 {
-  "name": "@oneminute/worker",
+  "name": "@urlstudio/worker",
   "private": true,
   "type": "module",
   "scripts": {

@@ -74,7 +74,7 @@ async function forward(
     if (download) {
       outgoing.set(
         "Content-Disposition",
-        'attachment; filename="oneminute-presentation.mp4"',
+        'attachment; filename="url-studio-presentation.mp4"',
       );
     }
     return new Response(response.body, {

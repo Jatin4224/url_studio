@@ -21,7 +21,7 @@ const steps = [
   "Creating cinematic scenes",
   "Composing presentation",
 ];
-const savedJobKey = "oneminute-studio-job";
+const savedJobKey = "url-studio-job";
 
 function Arrow() {
   return (
@@ -206,7 +206,9 @@ export default function Page() {
       // A missing or unreachable backend answers with an HTML error page, not JSON.
       const result = await response.json().catch(() => ({}));
       if (!response.ok)
-        throw new Error(result.error ?? "Could not connect to the studio. Please try again.");
+        throw new Error(
+          result.error ?? "Could not connect to the studio. Please try again.",
+        );
       setJob(result);
       localStorage.setItem(savedJobKey, result.id);
       window.scrollTo({ top: 0 });
@@ -279,13 +281,13 @@ export default function Page() {
   return (
     <div className="studio-shell">
       <header className="site-header">
-        <Link className="wordmark" href="/" aria-label="OneMinute Studio home">
+        <Link className="wordmark" href="/" aria-label="URL Studio home">
           <span className="brand-symbol" aria-hidden="true">
             <i />
             <i />
             <i />
           </span>
-          OneMinute <span className="wordmark-light">Studio</span>
+          URL <span className="wordmark-light">Studio</span>
         </Link>
         <span className="header-note">
           <span className="tiny-dot" /> A new perspective on your product
@@ -350,7 +352,7 @@ export default function Page() {
                   <br />A new <em>perspective.</em>
                 </h2>
                 <p className="intro">
-                  OneMinute Studio uses your real product interface and turns it
+                  URL Studio uses your real product interface and turns it
                   into a cinematic sequence without replacing its identity.
                 </p>
               </div>
@@ -363,7 +365,7 @@ export default function Page() {
                 </span>
                 <span className="stage-label bottom-left">00:00:03:12</span>
                 <span className="stage-label bottom-right">
-                  ONEMINUTE STUDIO
+                  URL STUDIO
                 </span>
                 <div className="source-panel">
                   <MiniSite />
@@ -551,7 +553,7 @@ export default function Page() {
               </div>
               <figure className="stage cut-stage">
                 <span className="stage-label top-left">
-                  <span className="tiny-dot" /> oneminute-presentation.mp4
+                  <span className="tiny-dot" /> url-studio-presentation.mp4
                 </span>
                 <span className="stage-label top-right">
                   SCENE 02 <span>/</span> 04
@@ -584,7 +586,7 @@ export default function Page() {
                   <span>00:09 / 00:28</span>
                 </div>
                 <figcaption className="sr-only">
-                  A finished OneMinute Studio presentation: one continuous film
+                  A finished URL Studio presentation: one continuous film
                   built from the sections of a website.
                 </figcaption>
               </figure>
@@ -656,7 +658,7 @@ export default function Page() {
               <a
                 className="primary-button"
                 href={`${job.finalVideoUrl}?download=1`}
-                download="oneminute-presentation.mp4"
+                download="url-studio-presentation.mp4"
               >
                 Download MP4
                 <Arrow />
@@ -671,7 +673,7 @@ export default function Page() {
               </p>
             )}
             <p className="result-meta">
-              1920 × 1080 <span>·</span> 16:9 <span>·</span> Made with OneMinute
+              1920 × 1080 <span>·</span> 16:9 <span>·</span> Made with URL Studio
               Studio
             </p>
           </section>
@@ -771,7 +773,7 @@ export default function Page() {
       <footer>
         <span>One link. A different dimension.</span>
         <span>
-          OneMinute Studio <span className="footer-mark">/</span> 2026
+          URL Studio <span className="footer-mark">/</span> 2026
         </span>
       </footer>
     </div>

@@ -183,7 +183,7 @@ function LiveTail() {
         event.resource?.["oml.project.name"] ??
         event.attributes?.["oml.project.name"];
       return (
-        project === "OneMinute Studio" &&
+        project === "URL Studio" &&
         (level === "all" || event.level === level) &&
         (!query ||
           `${event.message} ${event.serviceName} ${event.eventName ?? ""} ${JSON.stringify(event.attributes)}`
@@ -296,10 +296,10 @@ function LiveTail() {
               {error
                 ? "Reconnect to try again."
                 : isLoading
-                  ? "Connecting to OneMinute Logs…"
+                  ? "Connecting to the log stream…"
                   : search || level !== "all"
                     ? "Try another search or log level."
-                    : "New events from OneMinute Studio will appear here as they arrive."}
+                    : "New events from URL Studio will appear here as they arrive."}
             </p>
             {!error && !isLoading && !search && level === "all" && (
               <span className={styles.emptyHint}>
@@ -344,9 +344,9 @@ function LiveTail() {
       )}
       <div className={styles.consoleFooter}>
         <span>
-          OneMinute Studio <span aria-hidden="true">/</span> All services
+          URL Studio <span aria-hidden="true">/</span> All services
         </span>
-        <span>Latest 5,000 events · Powered by OneMinute Logs</span>
+        <span>Latest 5,000 events · Live log stream</span>
       </div>
     </>
   );
@@ -354,7 +354,10 @@ function LiveTail() {
 
 export default function LogsPage({ expires }: { expires: number }) {
   useEffect(() => {
-    const timer = setTimeout(() => window.location.reload(), Math.max(0, expires - Date.now()));
+    const timer = setTimeout(
+      () => window.location.reload(),
+      Math.max(0, expires - Date.now()),
+    );
     return () => clearTimeout(timer);
   }, [expires]);
   const [session, setSession] = useState(0);

@@ -1,13 +1,14 @@
-# URL Studio — starter
+# URL Studio — web
 
-The complete url Studio landing page and presentation UI, with **no backend connected**.
+The URL Studio landing page, presentation UI and admin log viewer.
 
 ```sh
 npm install
 npm run dev   # http://localhost:3000
 ```
 
-Everything visual is here: the landing page sections, the URL input, the progress view and the result
-player. Submitting a URL calls `POST /api/presentations`, which does not exist yet, so the page shows
-"Could not connect to the studio". That route, the worker that generates the presentation, storage and
-monitoring are what we build next.
+Submitting a URL calls `POST /api/presentations`, which proxies to the worker in
+[../workers/](../workers/). Set `WORKER_URL` in `.env.local` or the page will show
+"The studio is temporarily unavailable".
+
+See the [root README](../READ.MD) for the full pipeline, configuration and setup.
